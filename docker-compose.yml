@@ -1,0 +1,10 @@
+version: '3.9'
+
+services: 
+  webapp: 
+    # TODO: create web app services 
+  workers:
+    # TODO: create worker services
+  database: 
+    # TODO: ephemeral 
+    image: postgresql/postgresql:latest
