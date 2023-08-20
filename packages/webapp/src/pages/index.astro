@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// TODO: actually get user using a utilitiy function
+// const user = await getUser(Astro.request);
+const user = null;
+
+if (!user){
+	return Astro.redirect('/login');
+}
+---
+
+<Layout title="Cabin">
+	<h1>Cabin</h1>
+</Layout>
