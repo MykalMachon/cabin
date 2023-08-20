@@ -10,9 +10,8 @@ import { prisma } from "./database";
 export const getUserByRequest = async (request: Request) => {
   // get the session cookie from the request
   const cookies = request.headers.get('cookie');
-  console.log(cookies);
   const sessionId = cookies?.split(';').find((cookie: string) => cookie.trim().startsWith('session='))?.split('=')[1];
-  console.log(sessionId);
+  
   // if session cookie is missing, return null
   if(!sessionId) return null;
 
@@ -21,7 +20,15 @@ export const getUserByRequest = async (request: Request) => {
     where: { id: sessionId },
     select: {
       id: true,
-      user: true
+      user: {
+        select: {
+          id: true, 
+          name: true,
+          email: true,
+          createdAt: true,
+          updatedAt: true,
+        }
+      }
     }
   });
 

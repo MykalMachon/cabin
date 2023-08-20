@@ -5,33 +5,21 @@ import { prisma } from '@utils/database';
 
 export const get: APIRoute = async ({ params, request, cookies }) => {
   const sessionCookie = cookies.get('session');
-  const sessionId = sessionCookie.toString();
+  const sessionId = sessionCookie.value;
 
   // if session cookie is missing, return error
   if (!sessionId) {
-    return {
-      body: JSON.stringify({ error: "You're not logged in." }),
-      status: 400,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+    return new Response(JSON.stringify({message: 'not logged in'}), {status: 401});
   }
 
   // delete the session from the database
-  prisma.session.delete({
-    where: { id: sessionId},
+  await prisma.session.delete({
+    where: { id: sessionId },
   });
 
   // delete the session cookie
-  cookies.delete('session');
+  cookies.delete('session', {path: '/'});
 
   // return a success error
-  return { 
-    body: JSON.stringify({ message: "logged out" }),
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
+  return new Response(JSON.stringify({message: 'logged out'}), {status: 200});
 }

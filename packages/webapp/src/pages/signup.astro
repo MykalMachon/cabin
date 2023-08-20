@@ -1,5 +1,11 @@
 ---
 import SignupForm from '@components/forms/SignupForm';
+import { getUserByRequest } from '@utils/user';
+
+const user = await getUserByRequest(Astro.request);
+if(user){
+    return Astro.redirect('/', 307)
+}
 ---
 
 <h2>Signup</h2>

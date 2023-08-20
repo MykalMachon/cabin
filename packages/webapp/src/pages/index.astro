@@ -1,15 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getUserByRequest } from '@utils/user';
 
-// TODO: actually get user using a utilitiy function
-// const user = await getUser(Astro.request);
-const user = null;
+const user = await getUserByRequest(Astro.request);
 
+// if no user exists, go to the login page
 if (!user){
-	return Astro.redirect('/login');
+	return Astro.redirect('/login', 307);
 }
 ---
 
 <Layout title="Cabin">
 	<h1>Cabin</h1>
+	<pre>{JSON.stringify(user)}</pre>
 </Layout>
