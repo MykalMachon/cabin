@@ -1,7 +1,6 @@
+---
+import SignupForm from '@components/forms/SignupForm';
+---
+
 <h2>Signup</h2>
-<form action="/api/auth/signup">
-  <input type="text" name="name" placeholder="Full Name" />
-  <input type="email" name="email" placeholder="Email" />
-  <input type="password" name="password" placeholder="Password" />
-  <input type="submit" value="Signup" />
-</form>
+<SignupForm client:load />

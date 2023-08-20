@@ -1,16 +1,28 @@
 {
-  "name": "",
+  "name": "cabin_webapp",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "start": "npx prisma migrate && npx prisma generate && node ./dist/server/entry.mjs",
     "dev": "astro dev",
-    "start": "HOST=0.0.0.0 node ./dist/server/entry.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio"
   },
   "dependencies": {
     "@astrojs/node": "^5.3.5",
-    "astro": "^2.10.12"
+    "@astrojs/preact": "^2.2.2",
+    "@prisma/client": "^5.1.1",
+    "astro": "^2.10.12",
+    "bcryptjs": "^2.4.3",
+    "preact": "^10.17.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/node": "^20.5.1",
+    "prisma": "^5.1.1"
   }
 }
