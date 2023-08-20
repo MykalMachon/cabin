@@ -11,13 +11,9 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
 
   // if email or password is missing, return error
   if (!email || !password) {
-    return {
-      body: JSON.stringify({ error: "email or password is missing" }),
+    return new Response(JSON.stringify({ error: "email or password is missing" }), {
       status: 400,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+    })
   }
 
   // get the user from the database
@@ -27,13 +23,9 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
 
   // if user not found, or the user doesn't have a set password, return error
   if (!user || user.password === null) {
-    return {
-      body: JSON.stringify({ error: "email or password is invalid" }),
+    return new Response(JSON.stringify({ error: "email or password is incorrect" }), {
       status: 401,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+    })
   }
 
   // check user's password is valid
@@ -41,7 +33,9 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
 
   // if password is invalid, return error
   if (!passwordIsValid) {
-    return new Response(JSON.stringify({ error: "email or password is invalid" }), {status: 401});
+    return new Response(JSON.stringify({ error: "email or password is incorrect" }), {
+      status: 401,
+    })
   }
 
   // if password is valid, create a session for the user
