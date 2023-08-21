@@ -1,7 +1,7 @@
-import bcrypt from 'bcryptjs';
 import type { APIRoute } from 'astro';
 
 import { prisma } from '@utils/database';
+import { hashPassword } from '@utils/crypto';
 
 export const post: APIRoute = async ({ params, request, cookies }) => {
   const body = await request.formData();
@@ -20,8 +20,7 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
 
   // see if there is an existing user with this email
   const user = await prisma.user.findFirst({
-    where: { email: email },
-    select: { id: true, email: true, password: true },
+    where: { email: email }
   });
 
   // if user not found, or the user doesn't have a set password, return error
@@ -32,7 +31,7 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
   }
 
   // hash the users password
-  const hashedPassword = await bcrypt.hash(password, import.meta.env.NODE_ENV !== 'production' ? 1 : 10);
+  const hashedPassword = hashPassword(password);
 
   // create the user 
   const newUser = await prisma.user.create({

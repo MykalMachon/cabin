@@ -1,17 +1,22 @@
-import { compare } from 'bcryptjs';
 import type { APIRoute } from 'astro';
 
 import { prisma } from '@utils/database';
+import { comparePasswords } from '@utils/crypto';
 
+export const get: APIRoute = async({ request, cookies }) => {
+  return new Response(JSON.stringify({ message: 'not logged in' }), { status: 401 });
+}
 
-export const post: APIRoute = async ({ params, request, cookies }) => {
+export const post: APIRoute = async ({ request, cookies }) => {
   const body = await request.formData();
   const email = body.get('email') as string | undefined;
   const password = body.get('password') as string | undefined;
 
-  // if email or password is missing, return error
+  console.log(`someone is attempting to login as ${email}`);
+
+  // if email or password is missing, return message
   if (!email || !password) {
-    return new Response(JSON.stringify({ error: "email or password is missing" }), {
+    return new Response(JSON.stringify({ message: "email or password is missing" }), {
       status: 400,
     })
   }
@@ -21,19 +26,19 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
     where: { email: email },
   });
 
-  // if user not found, or the user doesn't have a set password, return error
+  // if user not found, or the user doesn't have a set password, return message
   if (!user || user.password === null) {
-    return new Response(JSON.stringify({ error: "email or password is incorrect" }), {
+    return new Response(JSON.stringify({ message: "email or password is incorrect" }), {
       status: 401,
     })
   }
 
   // check user's password is valid
-  const passwordIsValid = await compare(password, user.password);
+  const passwordIsValid = comparePasswords(password, user.password);
 
-  // if password is invalid, return error
+  // if password is invalid, return message
   if (!passwordIsValid) {
-    return new Response(JSON.stringify({ error: "email or password is incorrect" }), {
+    return new Response(JSON.stringify({ message: "email or password is incorrect" }), {
       status: 401,
     })
   }
@@ -48,11 +53,12 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
   // set the session cookie 
   cookies.set('session', session.id, {
     httpOnly: true,
-    secure: import.meta.env.NODE_ENV === 'production',
+    secure: true,
     maxAge: 60 * 60 * 24, // 1 day
     path: '/'
   });
 
+  console.log(`user ${user.email} logged in`);
 
   // return the session to the user
   return new Response(JSON.stringify({ message: 'logged in' }), {
