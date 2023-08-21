@@ -11,6 +11,9 @@ export const LoginForm = () => {
       method: "POST",
       body: formData,
     });
+    if(response.status === 200) {
+      window.location.href = "/";
+    }
     const data = await response.json();
     console.log(data);
     if (data.message) {
