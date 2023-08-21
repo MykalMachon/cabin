@@ -3,9 +3,11 @@ import type { JSX } from "preact/jsx-runtime";
 
 export const SignupForm = () => {
   const [responseMessage, setResponseMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function submit(e: JSX.TargetedEvent<HTMLFormElement, Event>) {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData(e.target as HTMLFormElement);
     const response = await fetch("/api/auth/signup", {
       method: "POST",
@@ -19,6 +21,7 @@ export const SignupForm = () => {
     if (data.message) {
       setResponseMessage(data.message);
     }
+    setLoading(false);
   }
 
   return (
@@ -35,7 +38,7 @@ export const SignupForm = () => {
         Password
         <input type="password" name="password" id="password" required />
       </label>
-      <button>Send</button>
+      <button disabled={loading}>{loading ? `loading...` : `Sign Up`}</button>
       {responseMessage && <p>{responseMessage}</p>}
     </form>
   );

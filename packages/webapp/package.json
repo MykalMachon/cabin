@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "start": "npx prisma migrate && npx prisma generate && node ./dist/server/entry.mjs",
+    "start": "npx prisma migrate deploy && npx prisma generate && node ./dist/server/entry.mjs",
     "dev": "astro dev --host",
     "build": "astro build",
     "preview": "astro preview",
