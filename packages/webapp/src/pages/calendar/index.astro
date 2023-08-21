@@ -1,10 +1,13 @@
 ---
+import Layout from "@layouts/Layout.astro";
 import { getUserByRequest } from "@utils/user";
 
 // make sure user is logged in
 if (!Astro.locals.isLoggedIn) return Astro.redirect('/login', 307);
 ---
 
-<h1>Calendar</h1>
-<p>This will show you the current calendar, and build a simple way to request cabin time.</p>
-<iframe src="https://calendar.google.com/calendar/embed?src=gregorycabin%40gmail.com&amp;ctz=America/Vancouver" style="border:solid 1px #777" width="100%" height="600px" frameborder="0" scrolling="no"></iframe>
+<Layout title="Calendar">
+  <h1>Calendar</h1>
+  <p>This will show you the current calendar, and build a simple way to request cabin time.</p>
+  <iframe src="https://calendar.google.com/calendar/embed?src=gregorycabin%40gmail.com&amp;ctz=America/Vancouver" style="border:solid 1px #777" width="100%" height="600px" frameborder="0" scrolling="no"></iframe>
+</Layout>

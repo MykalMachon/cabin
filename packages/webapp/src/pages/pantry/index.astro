@@ -1,12 +1,15 @@
 ---
+import Layout from "@layouts/Layout.astro";
 import { getUserByRequest } from "@utils/user";
 
 // make sure user is logged in
 if (!Astro.locals.isLoggedIn) return Astro.redirect('/login', 307);
 ---
 
-<h1>Pantry</h1>
-<p>
-  This page will allow you to make shopping lists for the cabin and keep track
-  of anything you're leaving up there
-</p>
+<Layout title="Pantry">
+  <h1>Pantry</h1>
+  <p>
+    This page will allow you to make shopping lists for the cabin and keep track
+    of anything you're leaving up there
+  </p>
+</Layout>
