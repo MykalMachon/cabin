@@ -6,8 +6,7 @@ if (Astro.locals.isLoggedIn) Astro.redirect('/', 307);
 ---
 
   
-<Layout title="Sign Up">
-  <h2>Signup</h2>
+<Layout title="Sign Up" hideNav={true}>
   <SignupForm client:load />
   <p>already have an account? <a href="/login">login</a></p>
 </Layout>

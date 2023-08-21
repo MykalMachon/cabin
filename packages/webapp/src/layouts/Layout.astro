@@ -1,23 +1,212 @@
---- 
+---
 interface Props {
-	title: string;
+  title: string;
+	hideNav?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, hideNav = false } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Gregory cabin website application">
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Gregory cabin website application" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="stylesheet" href="https://unpkg.com/open-props" />
+    <title>{title}</title>
+  </head>
+  <body>
+     <aside id="sidenav-open">
+			{!hideNav && <nav>
+        <a
+          href="#"
+          id="sidenav-close"
+          title="Close Menu"
+          aria-label="Close Menu"
+          onchange="
+          history.go(-1)
+          ">close</a
+        >
+        <div>
+          <h4>Pages</h4>
+          <ul class="nav__links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/calendar">Calendar</a></li>
+            <li><a href="/corkboard">Corkboard</a></li>
+            <li><a href="/pantry">Pantry</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Profile</h4>
+          <ul class="nav__user">
+            {
+              Astro.locals.isLoggedIn ? (
+                <>
+                  <li class="user-plate">
+                    {Astro.locals.user && Astro.locals.user.name}
+                  </li>
+                  <li>
+                    <a href="/logout">Logout</a>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <a href="/login">Login</a>
+                </li>
+              )
+            }
+          </ul>
+        </div>
+      </nav> }
+    </aside> 
+    <main>
+      <header>
+        <a
+          href="#sidenav-open"
+          class="hamburger"
+          id="sidenav-button"
+          title="Open Menu"
+          aria-label="Open Menu">open</a
+        >
+        <h1>{title}</h1>
+      </header>
+      <slot />
+    </main>
+  </body>
+  <script>
+    const main = document.querySelector('main');
+    const sidenav = document.querySelector('#sidenav-open');
+    const closenav = document.querySelector('#sidenav-close');
+    const opennav = document.querySelector('#sidenav-button');
+
+    // set focus to our open/close buttons after animation
+    sidenav.addEventListener('transitionend', (e) => {
+      if (e.propertyName !== 'transform') return;
+
+      const isOpen = document.location.hash === '#sidenav-open';
+
+      isOpen ? closenav.focus() : opennav.focus();
+
+      if (!isOpen) {
+        history.replaceState(history.state, '');
+      }
+    });
+
+    // close menu when you click on the main element
+    main.addEventListener('click', (e) => {
+      const isOpen = document.location.hash === '#sidenav-open';
+      if (isOpen) {
+        document.location.hash = '';
+      }
+    });
+
+    // close our menu when esc is pressed
+    sidenav.addEventListener('keyup', (e) => {
+      if (e.code === 'Escape')
+        window.history.length
+          ? window.history.back()
+          : (document.location.hash = '');
+    });
+  </script>
 </html>
 
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  body {
+    --easeOutExpo: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration: 600ms;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid: [stack] 1fr / min-content [stack] 1fr;
+  }
+
+  main:after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0);
+    transition: background var(--duration) var(--easeOutExpo);
+    z-index: var(--layer-1);
+    pointer-events: none;
+  }
+
+  main {
+    padding: var(--size-5) var(--size-3);
+  }
+
+  #sidenav-open {
+    display: grid;
+    grid-template-columns: [nav] 2fr [escape] 1fr;
+    padding: var(--size-3);
+  }
+
+  #sidenav-button,
+  #sidenav-close {
+    user-select: none;
+    touch-action: manipulation;
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    body > aside,
+    body > main {
+      grid-area: stack;
+    }
+
+    #sidenav-button,
+    #sidenav-close {
+      display: inline;
+    }
+
+    #sidenav-open {
+      position: sticky;
+      top: 0;
+      max-height: 100vh;
+      max-width: 70vw;
+      box-shadow: var(--shadow-2);
+      overflow: hidden auto;
+      overscroll-behavior: contain;
+
+      background: white;
+
+      visibility: hidden; /* not keyboard accessible when closed */
+      transform: translateX(-110vw);
+      will-change: transform;
+      transition: transform var(--duration) var(--easeOutExpo),
+        visibility 0s linear var(--duration);
+      z-index: var(--layer-important);
+    }
+
+    #sidenav-open:target {
+      visibility: visible;
+      transform: translateX(0);
+      transition: transform var(--duration) var(--easeOutExpo);
+    }
+
+    #sidenav-open:target ~ main {
+      pointer-events: none;
+    }
+
+    #sidenav-open:target ~ main:after {
+      background: rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #sidenav-open {
+      --duration: 1ms;
+    }
+  }
+</style>
