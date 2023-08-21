@@ -9,5 +9,5 @@ export default defineConfig({
     mode: "standalone"
   }),
   output: 'server',
-  integrations: [preact()]
+  integrations: [preact()],
 });
