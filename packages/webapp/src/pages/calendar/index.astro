@@ -1,2 +1,9 @@
+---
+import { getUserByRequest } from "@utils/user";
+
+// make sure user is logged in
+if (!Astro.locals.isLoggedIn) return Astro.redirect('/login', 307);
+---
+
 <h1>Calendar</h1>
 <p>This will show you the current calendar, and build a simple way to request cabin time.</p>

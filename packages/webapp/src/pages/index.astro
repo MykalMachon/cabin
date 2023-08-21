@@ -1,16 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getUserByRequest } from '@utils/user';
 
-const user = await getUserByRequest(Astro.request);
-
-// if no user exists, go to the login page
-if (!user){
-	return Astro.redirect('/login', 307);
-}
+// make sure user is logged in
+if (!Astro.locals.isLoggedIn) return Astro.redirect('/login', 307);
 ---
 
 <Layout title="Cabin">
-	<h1>Cabin</h1>
-	<pre>{JSON.stringify(user)}</pre>
+  <h1>Cabin</h1>
+  <nav>
+    <ul>
+      <li><a href="/calendar">Calendar</a></li>
+      <li>
+        <a href="/corkboard">Corkboard</a>
+      </li>
+      <li>
+        <a href="/pantry">Pantry</a>
+      </li>
+    </ul>
+  </nav>
+  <p>Hi {Astro.locals.user && Astro.locals.user.name}!</p>
+  <p><a href="/logout">logout</a></p>
 </Layout>
