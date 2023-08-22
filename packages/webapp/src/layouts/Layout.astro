@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon';
+
 interface Props {
   title: string;
   hideNav?: boolean;
@@ -15,7 +17,7 @@ const { title, hideNav = false } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="https://unpkg.com/open-props" />
+    <link rel="stylesheet" href="main.css" />
     <title>{title}</title>
   </head>
   <body>
@@ -23,31 +25,45 @@ const { title, hideNav = false } = Astro.props;
       {
         !hideNav && (
           <nav>
-            <a
-              href="#"
-              id="sidenav-close"
-              title="Close Menu"
-              aria-label="Close Menu"
-              onchange="
-              history.go(-1)
-              "
-            >
-              Close Menu
-            </a>
             <div>
-              <h4>Pages</h4>
               <ul class="nav__links">
                 <li>
-                  <a href="/">Home</a>
+                  <a
+                    href="#"
+                    id="sidenav-close"
+                    title="Close Menu"
+                    aria-label="Close Menu"
+                    onchange="
+                    history.go(-1)
+                    "
+                  >
+                    <Icon name="mdi:close" />
+                    Close Menu
+                  </a>
                 </li>
                 <li>
-                  <a href="/calendar">Calendar</a>
+                  <a href="/">
+                    <Icon name="mdi:home" />
+                    Home
+                  </a>
                 </li>
                 <li>
-                  <a href="/corkboard">Corkboard</a>
+                  <a href="/calendar">
+                    <Icon name="mdi:calendar" />
+                    Calendar
+                  </a>
                 </li>
                 <li>
-                  <a href="/pantry">Pantry</a>
+                  <a href="/corkboard">
+                    <Icon name="mdi:bulletin-board" />
+                    Corkboard
+                  </a>
+                </li>
+                <li>
+                  <a href="/pantry">
+                    <Icon name="mdi:format-list-checks" />
+                    Pantry
+                  </a>
                 </li>
               </ul>
             </div>
@@ -57,17 +73,24 @@ const { title, hideNav = false } = Astro.props;
                 {Astro.locals.isLoggedIn ? (
                   <>
                     <li class="user-plate">
-                      {Astro.locals.user && Astro.locals.user.name}
+                      <a href="#">
+                        <Icon name="mdi:account-circle" />
+                        {Astro.locals.user && Astro.locals.user.name}
+                      </a>
                     </li>
                     <li>
-                      <a href="/logout">Logout</a>
+                      <a href="/logout">
+                        <Icon name="mdi:logout" />
+                        Logout</a>
                     </li>
                   </>
                 ) : (
                   <li>
+                    <Icon name="mdi:login"/>
                     <a href="/login">Login</a>
                   </li>
                 )}
+                
               </ul>
             </div>
           </nav>
@@ -85,7 +108,7 @@ const { title, hideNav = false } = Astro.props;
               title="Open Menu"
               aria-label="Open Menu"
             >
-              Open Menu
+              <Icon name="mdi:menu" />
             </a>
           )
         }
@@ -132,8 +155,76 @@ const { title, hideNav = false } = Astro.props;
 </html>
 
 <style>
+  :global(body) {
+    font-family: var(--font-sans);
+  }
+
   :global(*) {
     box-sizing: border-box;
+  }
+
+  aside {
+    background: var(--paper-2);
+    color: var(--ink-2);
+    min-width: 250px;
+    border-right: 1px solid var(--paper-3);
+    max-height: 100vh;
+    overflow: hidden auto;
+
+  }
+
+  aside nav {
+    width: 100%;
+    padding: var(--size-3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  aside h4 {
+    font-size: small;
+    margin: 0;
+    margin: var(--size-3) 0 0 0;
+    padding: var(--size-2) var(--size-3);
+    color: var(--ink-3);
+  }
+
+  aside ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  aside li {
+    display: block;
+  }
+
+  aside li a [astro-icon] {
+    width: 24px;
+    height: 24px;
+    color: var(--primary-4);
+  }
+
+  aside li a {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    gap: var(--size-3);
+    padding: var(--size-2) var(--size-3);
+    color: var(--ink-1);
+    text-decoration: none;
+    border-radius: var(--radius-2);
+  }
+
+  aside li a:hover {
+    color: var(--ink-2);
+    background: var(--paper-3);
+  }
+
+  aside li a:hover [astro-icon] {
+    color: var(--primary-3);
   }
 
   body {
@@ -166,8 +257,6 @@ const { title, hideNav = false } = Astro.props;
 
   #sidenav-open {
     display: grid;
-    grid-template-columns: [nav] 2fr [escape] 1fr;
-    padding: var(--size-3);
   }
 
   #sidenav-button,
@@ -185,8 +274,30 @@ const { title, hideNav = false } = Astro.props;
 
     #sidenav-button,
     #sidenav-close {
-      display: inline;
+      display: flex;
     }
+
+    aside li:has(a#sidenav-close) {
+      padding-bottom: var(--size-2);
+      border-bottom: 1px solid var(--paper-3);
+      margin-bottom: var(--size-2);
+    }
+
+    a#sidenav-button {
+    background: var(--paper-3);
+    color: var(--paper-1);
+    display: inline-flex;
+    width: auto;
+    gap: var(--size-2);
+    padding: var(--size-2);
+    border-radius: var(--radius-2);
+  }
+
+  a#sidenav-button [astro-icon]  {
+    width: 24px;
+    height: 24px;
+    color: var(--primary-4);
+  }
 
     #sidenav-open {
       position: sticky;
@@ -196,9 +307,6 @@ const { title, hideNav = false } = Astro.props;
       box-shadow: var(--shadow-2);
       overflow: hidden auto;
       overscroll-behavior: contain;
-
-      background: white;
-
       visibility: hidden; /* not keyboard accessible when closed */
       transform: translateX(-110vw);
       will-change: transform;
