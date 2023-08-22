@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon';
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
   title: string;
@@ -19,6 +20,7 @@ const { title, hideNav = false } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <link rel="stylesheet" href="main.css" />
     <title>{title}</title>
+    <ViewTransitions />
   </head>
   <body>
     <aside id="sidenav-open">
@@ -170,7 +172,6 @@ const { title, hideNav = false } = Astro.props;
     border-right: 1px solid var(--paper-3);
     max-height: 100vh;
     overflow: hidden auto;
-
   }
 
   aside nav {
