@@ -21,7 +21,10 @@
     "preact": "^10.17.1"
   },
   "devDependencies": {
+    "@astrojs/sitemap": "^2.0.2",
     "@types/node": "^20.5.1",
-    "prisma": "^5.1.1"
+    "astro-compress": "^2.0.14",
+    "prisma": "^5.1.1",
+    "vite-plugin-pwa": "^0.16.4"
   }
 }
