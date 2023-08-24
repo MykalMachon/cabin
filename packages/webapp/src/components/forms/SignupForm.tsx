@@ -17,7 +17,6 @@ export const SignupForm = () => {
       window.location.href = "/";
     }
     const data = await response.json();
-    console.log(data);
     if (data.message) {
       setResponseMessage(data.message);
     }

@@ -148,6 +148,16 @@ const { title, hideNav = false } = Astro.props;
           ? window.history.back()
           : (document.location.hash = '');
     });
+
+    // disables the use of the "back" button for going into logged-out sessions via cache/in-memory cache
+    document.addEventListener('DOMContentLoaded', async () => {
+      // get user details 
+      const res = await fetch('/api/auth/me', {cache: 'no-cache'});
+      if(res.status === 401) document.location = '/login';
+      if(res.status === 200) {
+        const user = await res.json();
+      }
+    });
   </script>
 </html>
 
