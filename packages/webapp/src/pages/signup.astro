@@ -1,12 +1,13 @@
 ---
 import SignupForm from '@components/forms/SignupForm';
+import AuthLayout from '@layouts/AuthLayout.astro';
 import Layout from '@layouts/Layout.astro';
 
 if (Astro.locals.isLoggedIn) Astro.redirect('/', 307);
 ---
 
   
-<Layout title="Sign Up" hideNav={true}>
+<AuthLayout title="Sign Up">
   <SignupForm client:load />
   <p>already have an account? <a href="/login">login</a></p>
-</Layout>
+</AuthLayout>

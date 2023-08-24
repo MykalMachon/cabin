@@ -1,6 +1,6 @@
 ---
 import { Icon } from 'astro-icon';
-import { ViewTransitions } from 'astro:transitions';
+import MainHead from '@components/MainHead.astro';
 
 interface Props {
   title: string;
@@ -13,14 +13,9 @@ const { title, hideNav = false } = Astro.props;
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Gregory cabin website application" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="main.css" />
+    <MainHead />
     <title>{title}</title>
-    <ViewTransitions />
+    <meta name="description" content="Gregory cabin website application" />
   </head>
   <body>
     <aside id="sidenav-open">

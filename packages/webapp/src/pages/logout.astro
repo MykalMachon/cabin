@@ -1,8 +1,9 @@
 ---
+import AuthLayout from '@layouts/AuthLayout.astro';
 import Layout from '@layouts/Layout.astro';
 ---
 
-<Layout title="logging out..." hideNav={true}>
+<AuthLayout title="logging out...">
   <p>logging out...</p>
   <script>
     const res = await fetch('/api/auth/logout');
@@ -11,4 +12,4 @@ import Layout from '@layouts/Layout.astro';
       window.location.href = '/login';
     }
   </script>
-</Layout>
+</AuthLayout>
