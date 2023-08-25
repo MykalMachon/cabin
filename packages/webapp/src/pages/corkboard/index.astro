@@ -1,14 +1,33 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { getUserByRequest } from '@utils/user';
+import PostList from '@components/corkboard/PostList';
+import PostForm from '@components/corkboard/PostForm';
 
 // make sure user is logged in
 if (!Astro.locals.isLoggedIn) return Astro.redirect('/login', 307);
 ---
 
 <Layout title="Corkboard">
-  <p>
-    Eventually you'll be able to post notes and pictures of your time at the
-    cabin here.
-  </p>
+  <PostForm client:load />
+  <PostList initPosts={[]} client:idle /> 
 </Layout>
+
+<style is:global>
+  .cb-postList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-3);
+    padding: var(--size-3) 0;
+  }
+
+  .cb-postList__post {
+    background: var(--paper-1);
+    border: 1px solid var(--paper-3);
+    border-radius: var(--radius-2);
+    padding: var(--size-3);
+  }
+
+  .cb-postList__post header p {
+    margin-top: var(--size-1);
+  }
+</style>

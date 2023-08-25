@@ -59,17 +59,19 @@
     padding: var(--size-2);
     border-radius: var(--radius-2);
     border: 1px solid var(--primary-1);
+    font-family: var(--font-sans);
   }
 
-  :is(input, select, textarea):focus {
+  :is(input, select, textarea, button):focus {
     outline-offset: 4px;
-    outline-color: var(--primary-3);
+    outline-color: var(--primary-2);
   }
 
   button,
   input[type='submit'] {
     padding: var(--size-2) var(--size-3);
-    background: var(--paper-1);
+    background: var(--primary-2);
+    color: var(--paper-1);
     border: 1px solid var(--primary-1);
     border-radius: var(--radius-2);
     font-size: var(--font-size-1);

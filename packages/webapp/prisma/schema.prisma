@@ -18,6 +18,7 @@ model User {
   email     String    @unique
   password  String?
   sessions  Session[]
+  posts     Post[]
 }
 
 model Session {
@@ -26,4 +27,14 @@ model Session {
   expiresAt DateTime @default(dbgenerated("now() + interval '7 days'"))
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  content     String
+  attachments String[]
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
 }
