@@ -54,7 +54,7 @@ export const post: APIRoute = async ({ request, cookies }) => {
   cookies.set('session', session.id, {
     httpOnly: true,
     secure: true,
-    maxAge: 60 * 60 * 24, // 1 day
+    maxAge: 60 * 60 * 24 * 7, // 1 day
     path: '/'
   });
 
