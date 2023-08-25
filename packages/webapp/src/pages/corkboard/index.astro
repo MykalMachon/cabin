@@ -1,15 +1,13 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import PostList from '@components/corkboard/PostList';
-import PostForm from '@components/corkboard/PostForm';
+import CorkBoardApp from '@components/corkboard/CorkBoardApp';
 
 // make sure user is logged in
 if (!Astro.locals.isLoggedIn) return Astro.redirect('/login', 307);
 ---
 
 <Layout title="Corkboard">
-  <PostForm client:load />
-  <PostList initPosts={[]} client:idle /> 
+  <CorkBoardApp client:load />
 </Layout>
 
 <style is:global>

@@ -1,29 +1,22 @@
 import { useEffect, useState } from "preact/hooks"
 import type { Post } from '@prisma/client';
+import { usePosts } from "./PostsContext";
 
 interface PostsListProps {
   initPosts: Array<Post>
 }
 
 const PostList = ({ initPosts }: PostsListProps) => {
-
-  const [posts, setPosts] = useState([]);
-  const [postsLoading, setPostsLoading] = useState(true);
+  const { posts, meta } = usePosts();
 
   useEffect(() => {
-    const getPosts = async () => {
-      setPostsLoading(true);
-      const res = await fetch('/api/corkboard/posts');
-      const data = await res.json();
-      setPosts(data.posts);
-      setPostsLoading(false);
-    }
-    getPosts();
-  }, [])
+    console.log(posts);
+    console.log(meta);
+  }, [posts, meta])
 
   return (
     <div className="cb-postList">
-      {postsLoading === true ? (
+      {posts === null ? (
         <p>loading...</p>
       ) : (
         <>

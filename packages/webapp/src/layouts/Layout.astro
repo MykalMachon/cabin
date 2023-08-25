@@ -165,6 +165,8 @@ const { title, hideNav = false } = Astro.props;
   :global(body) {
     font-family: var(--font-sans);
     background: var(--paper-2);
+    max-height: 100vh;
+    height: 100vh;
   }
 
   :global(*) {
@@ -260,6 +262,8 @@ const { title, hideNav = false } = Astro.props;
 
   main {
     padding: var(--size-5) var(--size-3);
+    max-height: 100vh;
+    overflow-y: scroll;
   }
 
   #sidenav-open {

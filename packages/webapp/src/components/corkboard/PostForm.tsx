@@ -1,9 +1,12 @@
 import { useState } from "preact/hooks";
 import type { JSX } from "preact/jsx-runtime";
 
+import { usePosts } from '@components/corkboard/PostsContext';
+
 export const SignupForm = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const { getPosts } = usePosts();
 
   async function submit(e: JSX.TargetedEvent<HTMLFormElement, Event>) {
     e.preventDefault();
@@ -22,6 +25,7 @@ export const SignupForm = () => {
     if (data.message) {
       setResponseMessage(data.message);
     }
+    getPosts();
     setLoading(false);
   }
 
