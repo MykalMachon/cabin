@@ -27,6 +27,7 @@ export const getUserByRequest = async (request: Request) => {
           email: true,
           createdAt: true,
           updatedAt: true,
+          roles: true,
         }
       }
     }

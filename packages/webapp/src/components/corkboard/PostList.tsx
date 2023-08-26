@@ -2,11 +2,8 @@ import { useEffect, useState } from "preact/hooks"
 import type { Post } from '@prisma/client';
 import { usePosts } from "./PostsContext";
 
-interface PostsListProps {
-  initPosts: Array<Post>
-}
 
-const PostList = ({ initPosts }: PostsListProps) => {
+const PostList = () => {
   const { posts, meta } = usePosts();
 
   useEffect(() => {

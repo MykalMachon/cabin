@@ -11,14 +11,23 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  name      String
-  email     String    @unique
-  password  String?
-  sessions  Session[]
-  posts     Post[]
+  id                String         @id @default(uuid())
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  name              String
+  email             String         @unique
+  password          String?
+  sessions          Session[]
+  posts             Post[]
+  roles             UserRoleType[] @default([USER])
+  bookingsRequested Booking[]      @relation("userBookingRequested")
+  bookingsDecided   Booking[]      @relation("userBookingDecided")
+}
+
+enum UserRoleType {
+  ADMIN
+  USER
+  GUEST
 }
 
 model Session {
@@ -30,11 +39,28 @@ model Session {
 }
 
 model Post {
-  id          String    @id @default(uuid())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   content     String
   attachments String[]
   userId      String
-  user        User      @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Booking {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status   String
+  checkIn  DateTime
+  checkOut DateTime
+  notes    String?
+
+  userRequestedId String
+  userRequested   User   @relation("userBookingRequested", fields: [userRequestedId], references: [id])
+
+  userDecidedId String
+  userDecided   User   @relation("userBookingDecided", fields: [userDecidedId], references: [id])
 }

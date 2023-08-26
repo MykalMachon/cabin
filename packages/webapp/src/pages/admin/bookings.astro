@@ -1,0 +1,12 @@
+---
+import Layout from "@layouts/Layout.astro";
+
+// make sure user is logged in
+if (!Astro.locals.isLoggedIn) return Astro.redirect('/login', 307);
+if (!Astro.locals.user.roles.includes('ADMIN')) return Astro.redirect('/');
+---
+
+<Layout title="Admin Bookings">
+  <hr />
+  <p>You can deny/approve bookings from here</p>
+</Layout>

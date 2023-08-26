@@ -63,6 +63,21 @@ const { title, hideNav = false } = Astro.props;
                   </a>
                 </li>
               </ul>
+              <h4>Admin</h4>
+              <ul class="nav__links">
+                <li>
+                  <a href="/admin">
+                    <Icon name="mdi:settings" />
+                    Settings
+                  </a>
+                </li>
+                <li>
+                  <a href="/admin/bookings">
+                    <Icon name="mdi:book-check" />
+                    Bookings
+                    </a>
+                </li>
+              </ul>
             </div>
             <div>
               <h4>Profile</h4>
@@ -78,16 +93,16 @@ const { title, hideNav = false } = Astro.props;
                     <li>
                       <a href="/logout">
                         <Icon name="mdi:logout" />
-                        Logout</a>
+                        Logout
+                      </a>
                     </li>
                   </>
                 ) : (
                   <li>
-                    <Icon name="mdi:login"/>
+                    <Icon name="mdi:login" />
                     <a href="/login">Login</a>
                   </li>
                 )}
-                
               </ul>
             </div>
           </nav>
@@ -113,241 +128,239 @@ const { title, hideNav = false } = Astro.props;
       </header>
       <slot />
     </main>
-  </body>
-  <script>
-    const main = document.querySelector('main');
-    const sidenav = document.querySelector('#sidenav-open');
-    const closenav = document.querySelector('#sidenav-close');
-    const opennav = document.querySelector('#sidenav-button');
+    <script>
+      const main = document.querySelector('main');
+      const sidenav = document.querySelector('#sidenav-open');
+      const closenav = document.querySelector('#sidenav-close');
+      const opennav = document.querySelector('#sidenav-button');
 
-    // set focus to our open/close buttons after animation
-    sidenav.addEventListener('transitionend', (e) => {
-      if (e.propertyName !== 'transform') return;
+      // set focus to our open/close buttons after animation
+      sidenav.addEventListener('transitionend', (e) => {
+        if (e.propertyName !== 'transform') return;
 
-      const isOpen = document.location.hash === '#sidenav-open';
+        const isOpen = document.location.hash === '#sidenav-open';
 
-      isOpen ? closenav.focus() : opennav.focus();
+        isOpen ? closenav.focus() : opennav.focus();
 
-      if (!isOpen) {
-        history.replaceState(history.state, '');
-      }
-    });
+        if (!isOpen) {
+          history.replaceState(history.state, '');
+        }
+      });
 
-    // close menu when you click on the main element
-    main.addEventListener('click', (e) => {
-      const isOpen = document.location.hash === '#sidenav-open';
-      if (isOpen) {
-        document.location.hash = '';
-      }
-    });
+      // close menu when you click on the main element
+      main.addEventListener('click', (e) => {
+        const isOpen = document.location.hash === '#sidenav-open';
+        if (isOpen) {
+          document.location.hash = '';
+        }
+      });
 
-    // close our menu when esc is pressed
-    sidenav.addEventListener('keyup', (e) => {
-      if (e.code === 'Escape')
-        window.history.length
-          ? window.history.back()
-          : (document.location.hash = '');
-    });
+      // close our menu when esc is pressed
+      sidenav.addEventListener('keyup', (e) => {
+        if (e.code === 'Escape')
+          window.history.length
+            ? window.history.back()
+            : (document.location.hash = '');
+      });
 
-    // disables the use of the "back" button for going into logged-out sessions via cache/in-memory cache
-    document.addEventListener('DOMContentLoaded', async () => {
-      // get user details 
-      const res = await fetch('/api/auth/me', {cache: 'no-cache'});
-      if(res.status === 401) document.location = '/login';
-      if(res.status === 200) {
-        const user = await res.json();
-      }
-    });
-  </script>
-</html>
+      // disables the use of the "back" button for going into logged-out sessions via cache/in-memory cache
+      document.addEventListener('DOMContentLoaded', async () => {
+        // get user details
+        const res = await fetch('/api/auth/me', { cache: 'no-cache' });
+        if (res.status === 401) document.location = '/login';
+        if (res.status === 200) {
+          const user = await res.json();
+        }
+      });
+    </script>
+  </body><style>
+    :global(body) {
+      font-family: var(--font-sans);
+      background: var(--paper-2);
+      max-height: 100vh;
+      height: 100vh;
+    }
 
-<style>
-  :global(body) {
-    font-family: var(--font-sans);
-    background: var(--paper-2);
-    max-height: 100vh;
-    height: 100vh;
-  }
+    :global(*) {
+      box-sizing: border-box;
+    }
 
-  :global(*) {
-    box-sizing: border-box;
-  }
-
-  aside {
-    background: var(--paper-2);
-    color: var(--ink-2);
-    min-width: 250px;
-    border-right: 1px solid var(--paper-3);
-    max-height: 100%;
-    overflow: hidden auto;
-  }
-
-  aside nav {
-    width: 100%;
-    padding: var(--size-3);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  aside h4 {
-    font-size: small;
-    margin: 0;
-    margin: var(--size-3) 0 0 0;
-    padding: var(--size-2) var(--size-3);
-    color: var(--ink-3);
-  }
-
-  aside ul {
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  aside li {
-    display: block;
-  }
-
-  aside li a [astro-icon] {
-    width: 24px;
-    height: 24px;
-    color: var(--primary-4);
-  }
-
-  aside li a {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    gap: var(--size-3);
-    padding: var(--size-2) var(--size-3);
-    color: var(--ink-1);
-    text-decoration: none;
-    border-radius: var(--radius-2);
-  }
-
-  aside li a:hover {
-    color: var(--ink-2);
-    background: var(--paper-3);
-  }
-
-  aside li a:hover [astro-icon] {
-    color: var(--primary-3);
-  }
-
-  body {
-    --easeOutExpo: cubic-bezier(0.16, 1, 0.3, 1);
-    --duration: 600ms;
-    width: 100%;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid: [stack] 1fr / min-content [stack] 1fr;
-  }
-
-  main:after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0);
-    transition: background var(--duration) var(--easeOutExpo);
-    z-index: var(--layer-1);
-    pointer-events: none;
-  }
-
-  main {
-    padding: var(--size-5) var(--size-3);
-    max-height: 100vh;
-    overflow-y: scroll;
-  }
-
-  #sidenav-open {
-    display: grid;
-  }
-
-  #sidenav-button,
-  #sidenav-close {
-    user-select: none;
-    touch-action: manipulation;
-    display: none;
-  }
-
-  @media (max-width: 640px) {
-    body > aside,
-    body > main {
-      grid-area: stack;
+    aside {
+      background: var(--paper-2);
+      color: var(--ink-2);
+      min-width: 250px;
+      border-right: 1px solid var(--paper-3);
+      max-height: 100%;
+      overflow: hidden auto;
     }
 
     aside nav {
-      justify-content: flex-start;      
+      width: 100%;
+      padding: var(--size-3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    aside h4 {
+      font-size: small;
+      margin: 0;
+      margin: var(--size-3) 0 0 0;
+      padding: var(--size-2) var(--size-3);
+      color: var(--ink-3);
+    }
+
+    aside ul {
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    aside li {
+      display: block;
+    }
+
+    aside li a [astro-icon] {
+      width: 24px;
+      height: 24px;
+      color: var(--primary-4);
+    }
+
+    aside li a {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      gap: var(--size-3);
+      padding: var(--size-2) var(--size-3);
+      color: var(--ink-1);
+      text-decoration: none;
+      border-radius: var(--radius-2);
+    }
+
+    aside li a:hover {
+      color: var(--ink-2);
+      background: var(--paper-3);
+    }
+
+    aside li a:hover [astro-icon] {
+      color: var(--primary-3);
+    }
+
+    body {
+      --easeOutExpo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration: 600ms;
+      width: 100%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid: [stack] 1fr / min-content [stack] 1fr;
+    }
+
+    main:after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0);
+      transition: background var(--duration) var(--easeOutExpo);
+      z-index: var(--layer-1);
+      pointer-events: none;
+    }
+
+    main {
+      padding: var(--size-5) var(--size-3);
+      max-height: 100vh;
+      overflow-y: scroll;
+    }
+
+    #sidenav-open {
+      display: grid;
     }
 
     #sidenav-button,
     #sidenav-close {
-      display: flex;
+      user-select: none;
+      touch-action: manipulation;
+      display: none;
     }
 
-    aside li:has(a#sidenav-close) {
-      padding-bottom: var(--size-2);
-      border-bottom: 1px solid var(--paper-3);
-      margin-bottom: var(--size-2);
+    @media (max-width: 640px) {
+      body > aside,
+      body > main {
+        grid-area: stack;
+      }
+
+      aside nav {
+        justify-content: flex-start;
+      }
+
+      #sidenav-button,
+      #sidenav-close {
+        display: flex;
+      }
+
+      aside li:has(a#sidenav-close) {
+        padding-bottom: var(--size-2);
+        border-bottom: 1px solid var(--paper-3);
+        margin-bottom: var(--size-2);
+      }
+
+      a#sidenav-button {
+        background: var(--paper-3);
+        color: var(--paper-1);
+        display: inline-flex;
+        width: auto;
+        gap: var(--size-2);
+        padding: var(--size-2);
+        border-radius: var(--radius-2);
+      }
+
+      a#sidenav-button [astro-icon] {
+        width: 24px;
+        height: 24px;
+        color: var(--primary-4);
+      }
+
+      #sidenav-open {
+        position: sticky;
+        top: 0;
+        max-height: 100%;
+        max-width: 70vw;
+        box-shadow: var(--shadow-2);
+        overflow: hidden auto;
+        overscroll-behavior: contain;
+        visibility: hidden; /* not keyboard accessible when closed */
+        transform: translateX(-110vw);
+        will-change: transform;
+        transition: transform var(--duration) var(--easeOutExpo),
+          visibility 0s linear var(--duration);
+        z-index: var(--layer-important);
+      }
+
+      #sidenav-open:target {
+        visibility: visible;
+        transform: translateX(0);
+        transition: transform var(--duration) var(--easeOutExpo);
+      }
+
+      #sidenav-open:target ~ main {
+        pointer-events: none;
+      }
+
+      #sidenav-open:target ~ main:after {
+        background: rgba(0, 0, 0, 0.25);
+      }
     }
 
-    a#sidenav-button {
-    background: var(--paper-3);
-    color: var(--paper-1);
-    display: inline-flex;
-    width: auto;
-    gap: var(--size-2);
-    padding: var(--size-2);
-    border-radius: var(--radius-2);
-  }
-
-  a#sidenav-button [astro-icon]  {
-    width: 24px;
-    height: 24px;
-    color: var(--primary-4);
-  }
-
-    #sidenav-open {
-      position: sticky;
-      top: 0;
-      max-height: 100%;
-      max-width: 70vw;
-      box-shadow: var(--shadow-2);
-      overflow: hidden auto;
-      overscroll-behavior: contain;
-      visibility: hidden; /* not keyboard accessible when closed */
-      transform: translateX(-110vw);
-      will-change: transform;
-      transition: transform var(--duration) var(--easeOutExpo),
-        visibility 0s linear var(--duration);
-      z-index: var(--layer-important);
+    @media (prefers-reduced-motion: reduce) {
+      #sidenav-open {
+        --duration: 1ms;
+      }
     }
-
-    #sidenav-open:target {
-      visibility: visible;
-      transform: translateX(0);
-      transition: transform var(--duration) var(--easeOutExpo);
-    }
-
-    #sidenav-open:target ~ main {
-      pointer-events: none;
-    }
-
-    #sidenav-open:target ~ main:after {
-      background: rgba(0, 0, 0, 0.25);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    #sidenav-open {
-      --duration: 1ms;
-    }
-  }
-</style>
+  </style>
+</html>
