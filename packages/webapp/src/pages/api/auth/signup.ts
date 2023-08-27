@@ -30,6 +30,14 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
     })
   }
 
+  // ensure the password is strong enough 
+  const passwordRegex = new RegExp('^(?=[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])(?=.*.{8,})');
+  if (!passwordRegex.test(password)) {
+    return new Response(JSON.stringify({ message: "password is not strong enough" }), {
+      status: 400,
+    })
+  }
+
   // hash the users password
   const hashedPassword = hashPassword(password);
 
