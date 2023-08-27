@@ -7,10 +7,6 @@ import { getUserByRequest } from "@utils/user";
 if (!Astro.locals.isLoggedIn) return Astro.redirect('/login', 307);
 ---
 
-<Layout title="Calendar">
-  <h2>Bookings</h2>
+<Layout title="Create a new booking">
   <BookingForm client:idle />
-
-  <h2>Current Calendar</h2>
-  <iframe src="https://calendar.google.com/calendar/embed?src=gregorycabin%40gmail.com&amp;ctz=America/Vancouver" style="border:solid 1px #777" width="100%" height="600px" frameborder="0" scrolling="no"></iframe>
 </Layout>
