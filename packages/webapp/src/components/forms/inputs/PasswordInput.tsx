@@ -1,13 +1,8 @@
 import { useEffect, useState } from "preact/hooks";
 import type { JSX } from "preact/jsx-runtime";
 
-
-
-type PasswordValidation = {
-  regex: RegExp;
-  label: string;
-  error: string;
-}
+import type { PasswordValidation } from "@utils/passwords";
+import { validatePassword } from "@utils/passwords";
 
 type PasswordInputProps = {
   name?: string;
@@ -27,13 +22,12 @@ const PasswordInput = ({ name = "password", label = "Password", placeholder = ""
   const [validPasswordState, setValidPasswordState] = useState<PasswordInputState>({ valid: false, errors: [], touched: false })
   const [showPassword, setShowPassword] = useState(false);
   // combined regex of the validations that checks for all conditions at once
-  const combinedRegex = new RegExp(validations.map((validation, idx) => `(?=${idx != 0 ? '.*' : ''}${validation.regex.source})`).join(''));
 
-  const validatePassword = (password: string) => {
-    const newValErrors = validations.filter(validation => !validation.regex.test(password));
+  const updatePassword = (password: string) => {
+    const validation = validatePassword(password, validations);
     setValidPasswordState({
-      valid: newValErrors.length === 0,
-      errors: newValErrors.map(validation => validation.error),
+      valid: validation.isValid,
+      errors: validation.errors,
       touched: password.length > 0
     })
   }
@@ -45,7 +39,7 @@ const PasswordInput = ({ name = "password", label = "Password", placeholder = ""
 
   const handlePasswordChange = (e: JSX.TargetedEvent<HTMLInputElement>) => {
     const passwordEl = e.target as HTMLInputElement
-    validatePassword(passwordEl.value);
+    updatePassword(passwordEl.value);
   }
 
   return (

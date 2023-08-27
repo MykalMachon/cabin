@@ -1,7 +1,9 @@
 import type { APIRoute } from 'astro';
 
 import { prisma } from '@utils/database';
+import { passwordValidations, validatePassword } from '@utils/passwords';
 import { hashPassword } from '@utils/crypto';
+
 
 export const post: APIRoute = async ({ params, request, cookies }) => {
   const body = await request.formData();
@@ -31,8 +33,7 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
   }
 
   // ensure the password is strong enough 
-  const passwordRegex = new RegExp('^(?=[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])(?=.*.{8,})');
-  if (!passwordRegex.test(password)) {
+  if (validatePassword(password, passwordValidations).errors.length > 0) {
     return new Response(JSON.stringify({ message: "password is not strong enough" }), {
       status: 400,
     })

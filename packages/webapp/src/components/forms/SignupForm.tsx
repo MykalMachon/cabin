@@ -2,23 +2,7 @@ import { useState } from "preact/hooks";
 import type { JSX } from "preact/jsx-runtime";
 import PasswordInput from "./inputs/PasswordInput";
 
-const passwordValidations = [{
-  regex: /[A-Z]/,
-  label: "Uppercase",
-  error: "Password must contain at least one uppercase letter"
-}, {
-  regex: /[0-9]/,
-  label: "Number",
-  error: "Password must contain at least one number"
-}, {
-  regex: /[^a-zA-Z0-9]/,
-  label: "Special Character",
-  error: "Password must contain at least one special character"
-}, {
-  regex: /.{8,}/,
-  label: "Length",
-  error: "Password must be at least 8 characters long"
-}];
+import { passwordValidations } from "@utils/passwords";
 
 export const SignupForm = () => {
   const [responseMessage, setResponseMessage] = useState("");
