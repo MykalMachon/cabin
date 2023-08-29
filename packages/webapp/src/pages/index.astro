@@ -1,8 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-// make sure user is logged in
-if (!Astro.locals.isLoggedIn) return Astro.redirect('/login', 307);
 ---
 
 <Layout title="Home">

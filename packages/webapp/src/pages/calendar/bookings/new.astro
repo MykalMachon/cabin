@@ -1,10 +1,6 @@
 ---
 import BookingForm from "@components/forms/BookingForm";
 import Layout from "@layouts/Layout.astro";
-import { getUserByRequest } from "@utils/user";
-
-// make sure user is logged in
-if (!Astro.locals.isLoggedIn) return Astro.redirect('/login', 307);
 ---
 
 <Layout title="Create a new booking">
