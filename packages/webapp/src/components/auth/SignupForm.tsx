@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 import type { JSX } from "preact/jsx-runtime";
-import PasswordInput from "./inputs/PasswordInput";
+import PasswordInput from "./PasswordInput";
 
 import { passwordValidations } from "@utils/passwords";
 

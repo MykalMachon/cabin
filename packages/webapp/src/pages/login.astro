@@ -1,5 +1,5 @@
 ---
-import LoginForm from '@components/forms/LoginForm';
+import LoginForm from '@components/auth/LoginForm';
 import AuthLayout from '@layouts/AuthLayout.astro';
 
 if (Astro.locals.isLoggedIn) Astro.redirect('/', 307);
@@ -7,5 +7,6 @@ if (Astro.locals.isLoggedIn) Astro.redirect('/', 307);
 
 <AuthLayout title="Login">
   <LoginForm client:load />
-  <p>don't have an account? <a href="/signup">Sign Up</a></p>
+  <span>Forgot your password? <a href="/password/forgot">Reset your password</a></span>
+  <span>Don't have an account? <a href="/signup">Sign Up</a></span>
 </AuthLayout>

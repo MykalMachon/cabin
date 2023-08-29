@@ -1,7 +1,6 @@
 ---
-import SignupForm from '@components/forms/SignupForm';
+import SignupForm from '@components/auth/SignupForm';
 import AuthLayout from '@layouts/AuthLayout.astro';
-import Layout from '@layouts/Layout.astro';
 
 if (Astro.locals.isLoggedIn) Astro.redirect('/', 307);
 ---
