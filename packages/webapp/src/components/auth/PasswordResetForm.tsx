@@ -23,7 +23,7 @@ const PasswordResetForm = ({ token, tokenState }: PasswordResetFormProps) => {
   return (
     <form action="/api/auth/passwords" method="POST">
       <input type="hidden" name="token" value={token} />
-      <PasswordInput validations={passwordValidations} />
+      <PasswordInput label="New password" validations={passwordValidations} />
       <button>Reset Password</button>
     </form>
   )

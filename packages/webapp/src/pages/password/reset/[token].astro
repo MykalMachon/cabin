@@ -1,0 +1,48 @@
+---
+import PasswordResetForm from '@components/auth/PasswordResetForm';
+import AuthLayout from '@layouts/AuthLayout.astro';
+const { token } = Astro.params;
+
+import { prisma } from '@services/database';
+
+const passwordResetToken = await prisma.passwordResetToken.findUnique({
+  where: {
+    token,
+    expiresAt: {
+      gt: new Date(),
+    },
+  },
+  select: {
+    id: true,
+    token: true,
+    user: {
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    },
+  },
+});
+
+if (!token || !passwordResetToken) {
+  Astro.response.status = 404;
+  Astro.response.statusText = 'Not found';
+}
+---
+
+<AuthLayout title={passwordResetToken ? 'Reset password' : 'Password reset expired'}>
+  {
+    passwordResetToken ? (
+      <p>Hey {passwordResetToken.user.name}, reset your password below:</p>
+      <PasswordResetForm token={passwordResetToken.token} />
+    ) : (
+      <div>
+        <p>Your password reset request has either expired, or is invalid.</p>
+        <p>
+          <a href="/password/forgot">Please submit a new request here </a>
+        </p>
+      </div>
+    )
+  }
+</AuthLayout>

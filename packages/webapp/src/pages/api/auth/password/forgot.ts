@@ -19,22 +19,33 @@ export const post: APIRoute = async ({ request }) => {
       }
     });
 
-    // if the email is invalid, return a transparent message "if you have a valid email, you'll get an email with further instructions"
-    if (user) {
-      // if the email is valid, create a reset token for the user
-      console.log(`creating a reset token for ${email} and enqueuing an email task`);
+    if (!user) {
+      console.log(`a password reset request was made for ${email} but no user exists with that email.`)
+      return new Response(JSON.stringify({ message: 'if you have a valid email, you\'ll get an email with further instructions' }), { status: 200 });
+    }
 
-      // create a reset token for the user
+    // ensure there isn't already a valid reset token for this user
+    const existingResetToken = await prisma.passwordResetToken.findFirst({
+      where: {
+        userId: user?.id,
+        expiresAt: {
+          gt: new Date()
+        }
+      }
+    });
+
+    if (existingResetToken) {
+      console.log(`a password reset token already exists for this user: ${existingResetToken.token}`);
+    }
+
+    if (user && !existingResetToken) {
+      console.log(`creating a reset token for ${email} and enqueuing an email task`);
       const newResetToken = await prisma.passwordResetToken.create({
         data: {
           userId: user.id,
         }
       });
-
-      // kick off a background job (to the workers!) to send the email to the user
-      emailQueue.add('send-password-reset-email', { email: email, passwordResetTokenId: newResetToken.id });
-    } else {
-      console.log(`someone tried to reset the password for ${email} but a user with that email doesn't exist in the database`);
+      emailQueue.add('send-password-reset-email', { email: email, resetToken: newResetToken.token });
     }
     // return a transparent message "if you have a valid email, you'll get an email with further instructions"
     return new Response(JSON.stringify({ message: 'if you have a valid email, you\'ll get an email with further instructions' }), { status: 200 });
