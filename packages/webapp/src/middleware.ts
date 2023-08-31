@@ -29,6 +29,7 @@ export const onRequest = defineMiddleware(async ({ locals, request, redirect, ur
   // populate locals with user and isLoggedIn
   locals.user = user;
   locals.isLoggedIn = user != null;
+  locals.isAdmin = user?.roles.includes('ADMIN') ?? false;
   
   return next();
 });

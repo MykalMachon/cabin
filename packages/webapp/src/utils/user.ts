@@ -1,4 +1,4 @@
-import { prisma } from "./database";
+import { prisma } from "@services/database";
 
 /**
  * looks at the request from the browser, validates the session,

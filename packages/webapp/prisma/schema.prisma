@@ -20,6 +20,7 @@ model User {
   sessions          Session[]
   posts             Post[]
   roles             UserRoleType[] @default([USER])
+  passwordResets    PasswordResetToken[]
   bookingsRequested Booking[]      @relation("userBookingRequested")
   bookingsDecided   Booking[]      @relation("userBookingDecided")
 }
@@ -36,6 +37,15 @@ model Session {
   expiresAt DateTime @default(dbgenerated("now() + interval '7 days'"))
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  expiresAt DateTime @default(dbgenerated("now() + interval '1 hour'"))
+  token     String   @unique @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Post {

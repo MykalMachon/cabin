@@ -2,7 +2,7 @@
 import Layout from "@layouts/Layout.astro";
 
 // make sure user is logged in
-if (!Astro.locals.user.roles.includes('ADMIN')) return Astro.redirect('/');
+if (!Astro.locals.isAdmin) return Astro.redirect('/');
 ---
 
 <Layout title="Admin">

@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-import { prisma } from '@utils/database';
+import { prisma } from '@services/database';
 
 export const get: APIRoute = async ({ request, locals }) => {
   if (!locals.isLoggedIn) {

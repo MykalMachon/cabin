@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 
-import { prisma } from '@utils/database';
+import { prisma } from '@services/database';
 import { comparePasswords } from '@utils/crypto';
 
 export const get: APIRoute = async({ request, cookies }) => {

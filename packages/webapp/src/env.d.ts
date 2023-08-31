@@ -7,7 +7,9 @@ declare namespace App {
       createdAt: Date;
       updatedAt: Date;
       name: string;
+      roles: string[];
     } | null
     isLoggedIn: boolean;
+    isAdmin: boolean;
   }
 }
