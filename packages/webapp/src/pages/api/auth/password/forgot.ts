@@ -45,7 +45,7 @@ export const post: APIRoute = async ({ request }) => {
           userId: user.id,
         }
       });
-      emailQueue.add('send-password-reset-email', { email: email, resetToken: newResetToken.token });
+      emailQueue.add('password_reset', { email: email, resetToken: newResetToken.token });
     }
     // return a transparent message "if you have a valid email, you'll get an email with further instructions"
     return new Response(JSON.stringify({ message: 'if you have a valid email, you\'ll get an email with further instructions' }), { status: 200 });

@@ -18,8 +18,6 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
     })
   }
 
-  // TODO: validate that the password is strong enough
-
   // see if there is an existing user with this email
   const user = await prisma.user.findFirst({
     where: { email: email }

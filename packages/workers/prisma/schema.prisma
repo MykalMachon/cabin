@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Booking {
+  id                                 String   @id
+  createdAt                          DateTime @default(now())
+  updatedAt                          DateTime
+  status                             String
+  checkIn                            DateTime
+  checkOut                           DateTime
+  notes                              String?
+  userRequestedId                    String
+  userDecidedId                      String
+  User_Booking_userDecidedIdToUser   User     @relation("Booking_userDecidedIdToUser", fields: [userDecidedId], references: [id])
+  User_Booking_userRequestedIdToUser User     @relation("Booking_userRequestedIdToUser", fields: [userRequestedId], references: [id])
+}
+
+model PasswordResetToken {
+  id        String   @id
+  createdAt DateTime @default(now())
+  expiresAt DateTime @default(dbgenerated("(now() + '01:00:00'::interval)"))
+  token     String   @unique
+  userId    String
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id          String   @id
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  content     String
+  attachments String[]
+  userId      String
+  User        User     @relation(fields: [userId], references: [id])
+}
+
+model Session {
+  id        String   @id
+  createdAt DateTime @default(now())
+  expiresAt DateTime @default(dbgenerated("(now() + '7 days'::interval)"))
+  userId    String?
+  User      User?    @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id                                    String               @id
+  createdAt                             DateTime             @default(now())
+  updatedAt                             DateTime
+  name                                  String
+  email                                 String               @unique
+  password                              String?
+  roles                                 UserRoleType[]       @default([USER])
+  Booking_Booking_userDecidedIdToUser   Booking[]            @relation("Booking_userDecidedIdToUser")
+  Booking_Booking_userRequestedIdToUser Booking[]            @relation("Booking_userRequestedIdToUser")
+  PasswordResetToken                    PasswordResetToken[]
+  Post                                  Post[]
+  Session                               Session[]
+}
+
+enum UserRoleType {
+  ADMIN
+  USER
+  GUEST
+}

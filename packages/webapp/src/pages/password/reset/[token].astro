@@ -35,7 +35,7 @@ if (!token || !passwordResetToken) {
   {
     passwordResetToken ? (
       <p>Hey {passwordResetToken.user.name}, reset your password below:</p>
-      <PasswordResetForm token={passwordResetToken.token} />
+      <PasswordResetForm token={passwordResetToken.token} client:load />
     ) : (
       <div>
         <p>Your password reset request has either expired, or is invalid.</p>
