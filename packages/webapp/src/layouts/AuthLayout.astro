@@ -1,0 +1,79 @@
+---
+import { Icon } from 'astro-icon';
+import MainHead from '@components/MainHead.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <MainHead />
+    <title>{title} | Cabin</title>
+    <meta name="description" content="Gregory cabin website application" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <img src="/favicons/cabin_128.png" width="128" height="128" alt="cabin app logo">
+        <h1>{title}</h1>
+      </header>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(body) {
+    margin: 0px;
+    font-family: var(--font-sans);
+    background: var(--primary-2);
+    color: var(--paper-1);
+    max-height: 100vh;
+  }
+
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(a) {
+    font-weight: bold;
+    color: var(--paper-1);
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--size-3);
+    padding: var(--size-3);
+  }
+
+  main > header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: var(--size-3);
+  }
+
+  main header img {
+    position: relative;
+    left: -16px;
+  }
+
+  h1 {
+    font-size: var(--font-size-fluid-3);
+    margin: 0;
+  }
+
+  :global(form) {
+    max-width: 400px;
+    width: 100%;
+  }
+</style>

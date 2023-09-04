@@ -1,5 +1,3 @@
 export async function get() {
-  return {
-    body: JSON.stringify({ message: `API is okay` }),
-  };
+  return new Response(JSON.stringify({ message: `API is okay` }), { status: 200 })
 }

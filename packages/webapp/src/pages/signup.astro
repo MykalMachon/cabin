@@ -1,12 +1,12 @@
 ---
-import SignupForm from '@components/forms/SignupForm';
-import { getUserByRequest } from '@utils/user';
+import SignupForm from '@components/auth/SignupForm';
+import AuthLayout from '@layouts/AuthLayout.astro';
 
-const user = await getUserByRequest(Astro.request);
-if(user){
-    return Astro.redirect('/', 307)
-}
+if (Astro.locals.isLoggedIn) Astro.redirect('/', 307);
 ---
 
-<h2>Signup</h2>
-<SignupForm client:load />
+  
+<AuthLayout title="Sign Up">
+  <SignupForm client:load />
+  <p>already have an account? <a href="/login">login</a></p>
+</AuthLayout>

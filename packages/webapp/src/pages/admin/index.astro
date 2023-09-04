@@ -1,0 +1,14 @@
+---
+import Layout from "@layouts/Layout.astro";
+
+// make sure user is logged in
+if (!Astro.locals.isAdmin) return Astro.redirect('/');
+---
+
+<Layout title="Admin">
+  <hr />
+  <p>General configuration for the application can be set here</p>
+
+  <h2>Integrations</h2>
+  <p>Google Calendar: <a href="#">Connect to google calendar</a></p>
+</Layout>

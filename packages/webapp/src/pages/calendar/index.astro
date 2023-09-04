@@ -1,2 +1,17 @@
-<h1>Calendar</h1>
-<p>This will show you the current calendar, and build a simple way to request cabin time.</p>
+---
+import Layout from '@layouts/Layout.astro';
+---
+
+<Layout title="Calendar">
+  <h2>Bookings</h2>
+  <p><a class="btn" href="/calendar/bookings/new">Create a new booking</a></p>
+
+  <h2>Current Calendar</h2>
+  <iframe
+    src="https://calendar.google.com/calendar/embed?src=gregorycabin%40gmail.com&ctz=America/Vancouver"
+    style="border:solid 1px #777"
+    width="100%"
+    height="600px"
+    frameborder="0"
+    scrolling="no"></iframe>
+</Layout>

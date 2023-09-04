@@ -1,4 +1,4 @@
-import { prisma } from "./database";
+import { prisma } from "@services/database";
 
 /**
  * looks at the request from the browser, validates the session,
@@ -11,9 +11,9 @@ export const getUserByRequest = async (request: Request) => {
   // get the session cookie from the request
   const cookies = request.headers.get('cookie');
   const sessionId = cookies?.split(';').find((cookie: string) => cookie.trim().startsWith('session='))?.split('=')[1];
-  
+
   // if session cookie is missing, return null
-  if(!sessionId) return null;
+  if (!sessionId) return null;
 
   // get the session and corresponding user from the database
   const sessionAndUser = await prisma.session.findFirst({
@@ -22,23 +22,20 @@ export const getUserByRequest = async (request: Request) => {
       id: true,
       user: {
         select: {
-          id: true, 
+          id: true,
           name: true,
           email: true,
           createdAt: true,
           updatedAt: true,
+          roles: true,
         }
       }
     }
   });
 
   // if session is missing, return null
-  if(!sessionAndUser) return null;
+  if (!sessionAndUser) return null;
 
   // return the user
   return sessionAndUser.user;
-};
-
-export const getUserBySession = async (sessionId: string) => {
-
 };

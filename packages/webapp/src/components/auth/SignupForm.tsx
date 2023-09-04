@@ -1,5 +1,8 @@
 import { useState } from "preact/hooks";
 import type { JSX } from "preact/jsx-runtime";
+import PasswordInput from "./PasswordInput";
+
+import { passwordValidations } from "@utils/passwords";
 
 export const SignupForm = () => {
   const [responseMessage, setResponseMessage] = useState("");
@@ -13,11 +16,10 @@ export const SignupForm = () => {
       method: "POST",
       body: formData,
     });
-    if(response.status === 200) {
+    if (response.status === 200) {
       window.location.href = "/";
     }
     const data = await response.json();
-    console.log(data);
     if (data.message) {
       setResponseMessage(data.message);
     }
@@ -34,10 +36,7 @@ export const SignupForm = () => {
         Email
         <input type="email" id="email" name="email" required />
       </label>
-      <label>
-        Password
-        <input type="password" name="password" id="password" required />
-      </label>
+      <PasswordInput validations={passwordValidations} />
       <button disabled={loading}>{loading ? `loading...` : `Sign Up`}</button>
       {responseMessage && <p>{responseMessage}</p>}
     </form>

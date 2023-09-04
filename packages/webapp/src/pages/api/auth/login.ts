@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 
-import { prisma } from '@utils/database';
+import { prisma } from '@services/database';
 import { comparePasswords } from '@utils/crypto';
 
 export const get: APIRoute = async({ request, cookies }) => {
@@ -54,7 +54,7 @@ export const post: APIRoute = async ({ request, cookies }) => {
   cookies.set('session', session.id, {
     httpOnly: true,
     secure: true,
-    maxAge: 60 * 60 * 24, // 1 day
+    maxAge: 60 * 60 * 24 * 7, // 1 day
     path: '/'
   });
 

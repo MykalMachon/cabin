@@ -1,7 +1,9 @@
 import type { APIRoute } from 'astro';
 
-import { prisma } from '@utils/database';
+import { prisma } from '@services/database';
+import { passwordValidations, validatePassword } from '@utils/passwords';
 import { hashPassword } from '@utils/crypto';
+
 
 export const post: APIRoute = async ({ params, request, cookies }) => {
   const body = await request.formData();
@@ -16,8 +18,6 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
     })
   }
 
-  // TODO: validate that the password is strong enough
-
   // see if there is an existing user with this email
   const user = await prisma.user.findFirst({
     where: { email: email }
@@ -26,6 +26,13 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
   // if user not found, or the user doesn't have a set password, return error
   if (user) {
     return new Response(JSON.stringify({ message: "user already exists with this email" }), {
+      status: 400,
+    })
+  }
+
+  // ensure the password is strong enough 
+  if (validatePassword(password, passwordValidations).errors.length > 0) {
+    return new Response(JSON.stringify({ message: "password is not strong enough" }), {
       status: 400,
     })
   }
@@ -53,7 +60,7 @@ export const post: APIRoute = async ({ params, request, cookies }) => {
   cookies.set('session', session.id, {
     httpOnly: true,
     secure: true,
-    maxAge: 60 * 60 * 24, // 1 day
+    maxAge: 60 * 60 * 24 * 7, // 1 day
     path: '/'
   });
 

@@ -17,6 +17,9 @@
       ],
       "@utils/*": [
         "src/utils/*"
+      ],
+      "@services/*": [
+        "src/services/*"
       ]
     },
     "jsx": "react-jsx",

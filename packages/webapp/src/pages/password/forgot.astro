@@ -1,0 +1,13 @@
+---
+import PasswordForgotForm from '@components/auth/PasswordForgotForm';
+import AuthLayout from '@layouts/AuthLayout.astro';
+
+if (Astro.locals.isLoggedIn) Astro.redirect('/', 307);
+---
+
+<AuthLayout title="Reset password">
+  <span>If you don't remember your password, no worries! you can reset it.</span>
+  <span>Enter your email below to get started.</span>
+
+  <PasswordForgotForm client:idle />
+</AuthLayout>
