@@ -1,0 +1,16 @@
+---
+import Layout from "@layouts/Layout.astro";
+
+// make sure user is logged in
+if (!Astro.locals.isAdmin) return Astro.redirect('/');
+---
+
+<Layout title="Users">
+  <section>
+    <p>Invite new users here</p>
+    <button>Invite new users</button>
+  </section>
+  <section>
+    <p>list all users here</p>
+  </section>
+</Layout>
